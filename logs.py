@@ -1,3 +1,5 @@
+#!/usr/bin/env python3
+
 import psycopg2
 
 DBNAME = "news"
@@ -12,9 +14,10 @@ def queryDB(query):
     db.close()
     return results
 
+
 QUERY1 = '''select articles.title,  count(*) from
     log,articles where log.path = concat('/article/', articles.slug)
-    group by articles.title order by 1 desc limit 3;'''
+    group by articles.title order by count desc limit 3;'''
 
 QUERY2 = '''select authors.name, count(*) from log, articles,
     authors where log.path = concat('/article/', articles.slug)
@@ -48,6 +51,7 @@ def printQuery3():
     print("days with more than 1% of requests lead to errors: \n")
     for result in results:
         print(str(result[0]) + ' ---- ' + str(result[1]) + "%")
+
 
 printQuery1()
 printQuery2()
